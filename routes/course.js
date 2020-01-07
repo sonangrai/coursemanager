@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Course = require("../models/Course");
+const verify = require("./verifyToken");
 
 router.use(express.json());
 
-router.get("/api/courses", async(req, res) => {
+router.get("/", verify, async(req, res) => {
     try {
         const courses = await Course.find();
         res.json(courses);
@@ -13,7 +14,7 @@ router.get("/api/courses", async(req, res) => {
     }
 });
 
-router.get("/api/courses/:id", async(req, res) => {
+router.get("/:id", verify, async(req, res) => {
     try {
         const course = await Course.findById(req.params.id);
         res.json(course);
@@ -22,7 +23,7 @@ router.get("/api/courses/:id", async(req, res) => {
     }
 });
 
-router.post("/api/courses", async(req, res) => {
+router.post("/", verify, async(req, res) => {
     const myData = new Course({
         title: req.body.title
     });
@@ -36,7 +37,7 @@ router.post("/api/courses", async(req, res) => {
         });
 });
 
-router.put("/api/courses/:id", async(req, res) => {
+router.put("/:id", verify, async(req, res) => {
     try {
         const updatcourse = await Course.updateOne({ _id: req.params.id }, { $set: { title: req.body.title } });
         res.json(updatcourse);
@@ -45,7 +46,7 @@ router.put("/api/courses/:id", async(req, res) => {
     }
 });
 
-router.delete("/api/courses/:id", async(req, res) => {
+router.delete("/:id", async(req, res) => {
     try {
         const removecourse = await Course.remove({ _id: req.params.id });
         res.json(removecourse);
