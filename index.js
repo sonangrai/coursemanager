@@ -3,10 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 //mongoose.Promise = global.Promise;　DB Connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, () =>
